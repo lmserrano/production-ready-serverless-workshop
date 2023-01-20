@@ -1,0 +1,12 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# IDEA IDE Files (exclude all except runConfigurations)
+.idea
+!.idea/
+.idea/*
+!.idea/runConfigurations/
