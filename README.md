@@ -1,0 +1,57 @@
+# Production-ready Serverless Workshop
+
+## Useful Commands
+
+### Setup and Operation
+
+### Confirm that default values are correctly set
+
+Confirm that you have AWS CLI V2 Installed and that you are using the intended account and region:
+
+```shell
+vi ~/.aws/credentials
+```
+
+Confirm and/or update the values in [./serverless.yml](./serverless.yml), namely:
+
+```yaml
+provider:
+  # ...
+  stage: dev
+  region: eu-west-1
+```
+
+#### Setup and Installation
+
+```shell
+npm install
+```
+
+#### Deploy
+
+```shell
+npx sls deploy
+```
+
+#### Update `.env` file with Serverless and CloudFormation vars
+
+```shell
+npx sls export-env --all
+```
+
+#### Fill Seed Items
+
+```shell
+node seed-restaurants.js
+```
+
+----
+
+### Cleanup and Deletion
+
+#### Remove / Delete / Destroy
+
+```shell
+npx sls remove
+```
+
