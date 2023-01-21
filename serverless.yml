@@ -25,6 +25,17 @@ custom:
   export-env:
     overwrite: true
 
+  # Enable or disable caching globally
+  apiGatewayCaching:
+    enabled: false # disable all cache for now, since it has additional costs and is something that should only be enabled at a later time based on usage
+    clusterSize: '0.5' # defaults to '0.5'
+    ttlInSeconds: 300 # defaults to the maximum allowed: 3600
+    dataEncrypted: true # defaults to false
+    perKeyInvalidation:
+      requireAuthorization: true # default is true
+      handleUnauthorizedRequests: Ignore # default is "IgnoreWithWarning".
+
+
 provider:
   name: aws
   runtime: nodejs14.x
@@ -83,6 +94,9 @@ functions:
       - http:
           path: /
           method: get
+          caching:
+            enabled: true
+            ttlInSeconds: 600 # overrides the global setting for ttlInSeconds
     environment:
       restaurants_api: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${sls:stage}/restaurants
       cognito_user_pool_id: !Ref CognitoUserPool
@@ -95,6 +109,8 @@ functions:
           path: /restaurants
           method: get
           authorizer: aws_iam
+          caching:
+            enabled: true
     environment:
       restaurants_table: !Ref RestaurantsTable
 
@@ -108,6 +124,11 @@ functions:
             name: CognitoAuthorizer
             type: COGNITO_USER_POOLS
             arn: !GetAtt CognitoUserPool.Arn
+          caching:
+            enabled: true
+            cacheKeyParameters:
+              - name: integration.request.header.theme
+                mappedFrom: method.request.body.theme
     environment:
       restaurants_table: !Ref RestaurantsTable
 
@@ -251,3 +272,4 @@ resources:
 
 plugins:
   - serverless-export-env
+  - serverless-api-gateway-caching
