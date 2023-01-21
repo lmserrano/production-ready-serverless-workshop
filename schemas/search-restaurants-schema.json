@@ -1,0 +1,13 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": ["theme"],
+  "properties": {
+    "theme": {
+      "type": "string",
+      "title": "Theme to search for"
+    }
+  }
+}
