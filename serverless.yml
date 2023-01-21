@@ -22,6 +22,8 @@ frameworkVersion: '3'
 
 custom:
   name: luisserrano
+  export-env:
+    overwrite: true
 
 provider:
   name: aws
@@ -152,3 +154,5 @@ resources:
     RestaurantsTableName:
       Value: !Ref RestaurantsTable
 
+plugins:
+  - serverless-export-env
