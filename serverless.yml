@@ -32,6 +32,13 @@ provider:
   stage: dev
   region: eu-west-1
 
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: dynamodb:scan
+          Resource: !GetAtt RestaurantsTable.Arn
+
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
