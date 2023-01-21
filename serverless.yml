@@ -53,6 +53,9 @@ provider:
   stage: dev
   region: eu-west-1
 
+  apiGateway:
+    metrics: true
+
   iam:
     role:
       statements:
