@@ -55,3 +55,14 @@ node seed-restaurants.js
 npx sls remove
 ```
 
+----
+
+### Troubleshooting
+
+#### API Gateway Settings overwritten in endpoint configuration
+
+This has been documented here on [GitHub serverless-api-gateway-throttling Issue #16](https://github.com/DianaIonita/serverless-api-gateway-throttling/issues/16) and shall be resolved with:
+
+```shell
+sls reset-all-endpoint-settings
+```
