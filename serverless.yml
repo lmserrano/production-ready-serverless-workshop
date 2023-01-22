@@ -62,6 +62,20 @@ custom:
 #        - ProvisionedWriteCapacityUnits
 #        - ConsumedWriteCapacityUnits
 
+  alerts:
+    stages:
+      - production
+    dashboards: true
+    topics:
+      alarm:
+        topic: ${self:service}-${opt:stage, 'dev'}-alerts-alarm
+        notifications:
+          - protocol: email
+            endpoint: LMSSerrano@gmail.com
+    alarms:
+      - functionErrors
+      - functionThrottles
+
 provider:
   name: aws
   runtime: nodejs14.x
@@ -319,3 +333,4 @@ plugins:
   - serverless-api-gateway-throttling
   - serverless-associate-waf
   # - serverless-plugin-cloudwatch-dashboard # This plugin is not being maintained and is incompatible with current serverless version
+  - serverless-plugin-aws-alerts
