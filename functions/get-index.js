@@ -3,11 +3,14 @@ const Mustache = require('mustache')
 const http = require('axios')
 const aws4 = require('aws4')
 const URL = require('url')
+const { metricScope, Unit} = require("aws-embedded-metrics")
 
 const restaurantsApiRoot = process.env.restaurants_api
 const cognitoUserPoolId = process.env.cognito_user_pool_id
 const cognitoClientId = process.env.cognito_client_id
 const awsRegion = process.env.AWS_REGION
+
+const appname = process.env.appname
 
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
@@ -29,7 +32,11 @@ const getRestaurants = async () => {
     return (await httpReq).data
 }
 
-module.exports.handler = async (event, context) => {
+module.exports.handler = metricScope(metrics =>
+  async (event, context) => {
+    metrics.setNamespace(appname)
+    metrics.putDimensions({ Service: "workshop-luisserrano" })
+
     const restaurants = await getRestaurants()
     console.log(`found ${restaurants.length} restaurants`)
     const dayOfWeek = days[new Date().getDay()]
@@ -50,5 +57,9 @@ module.exports.handler = async (event, context) => {
         body: html
     }
 
+    metrics.putMetric("Count", response.data.length, Unit.Count)
+    metrics.setProperty("RequestId", context.awsRequestId)
+    metrics.setProperty("ApiGatewayRequestId", event.requestContext.requestId)
+
     return response
-}
+  })
