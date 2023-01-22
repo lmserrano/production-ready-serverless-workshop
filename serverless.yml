@@ -304,3 +304,4 @@ plugins:
   - serverless-api-gateway-caching
   - serverless-api-gateway-throttling
   - serverless-associate-waf
+  - serverless-plugin-cloudwatch-dashboard
