@@ -31,16 +31,54 @@ custom:
   alerts:
     stages:
       - production
-    dashboards: true
+      - dev
+    dashboards: vertical #true
     topics:
       alarm:
-        topic: ${self:service}-${opt:stage, 'dev'}-alerts-alarm
+        # https://www.serverless.com/framework/docs/providers/aws/guide/variables#referencing-serverless-core-variables
+        topic: ${self:service}-${sls:stage}-alerts-alarm
         notifications:
           - protocol: email
             endpoint: LMSSerrano@gmail.com
     alarms:
+      # Default (although fine-tuned)
       - functionErrors
       - functionThrottles
+      - functionInvocations
+      - functionDuration
+#      # Custom
+#      - restaurantsSearchErrors
+#      - restaurantsSearchLatency
+    definitions:
+      # Fine-tuning default alarms
+      functionInvocations:
+        threshold: 100
+        treatMissingData: missing
+      functionDuration:
+        threshold: 500
+        treatMissingData: missing
+      # Defining new custom alarms
+      restaurantsSearchErrors:
+        namespace: 'AWS/Lambda'
+        description: '/search 5xx errors'
+        metric: Errors
+        threshold: 0
+        treatMissingData: notBreaching
+        statistic: Sum
+        period: 60
+        evaluationPeriods: 1
+        datapointsToAlarm: 1
+        comparisonOperator: GreaterThanOrEqualToThreshold
+      restaurantsSearchLatency:
+        namespace: 'prod-serverless-workshop'
+        description: '/search latency'
+        metric: latency
+        threshold: 500
+        treatMissingData: notBreaching
+        statistic: Average
+        period: 60
+        evaluationPeriods: 1
+        comparisonOperator: GreaterThanOrEqualToThreshold
 
 provider:
   name: aws
@@ -113,6 +151,11 @@ functions:
                 schema: ${file(./schemas/search-restaurants-schema.json)}
                 name: PostSearchRestaurantModel
                 description: 'Validation model for Searching Restaurants'
+    alarms:
+      - name: restaurantsSearchErrors
+        enabled: true
+      - name: restaurantsSearchLatency
+        enabled: true
     environment:
       restaurants_table: !Ref RestaurantsTable
 
