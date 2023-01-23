@@ -46,20 +46,6 @@ custom:
 #    name: MyWAFRegionalWebACL
 #    version: Regional #(optional) Regional | V2
 
-# Disabled due to Serverless Plugin Cloudwatch Dashboard not being maintained and not being compatible with current serverless version
-#  dashboard:
-#    lambda:
-#      metrics: [ Duration, Errors, Invocations, Throttles ]
-#      stats: [ p99, p95, p90, p50 ]
-#      enabled: true
-#    dynamoDB:
-#      enabled: true
-#      metrics:
-#        - ProvisionedReadCapacityUnits
-#        - ConsumedReadCapacityUnits
-#        - ProvisionedWriteCapacityUnits
-#        - ConsumedWriteCapacityUnits
-
   alerts:
     stages:
       - production
@@ -328,5 +314,4 @@ plugins:
   - serverless-api-gateway-caching
   - serverless-api-gateway-throttling
   - serverless-associate-waf
-  # - serverless-plugin-cloudwatch-dashboard # This plugin is not being maintained and is incompatible with current serverless version
   - serverless-plugin-aws-alerts
