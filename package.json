@@ -20,7 +20,6 @@
     "serverless-plugin-aws-alerts": "^1.7.5"
   },
   "dependencies": {
-    "aws-embedded-metrics": "^4.0.0",
     "aws4": "^1.12.0",
     "axios": "^1.2.3",
     "mustache": "^4.2.0"
