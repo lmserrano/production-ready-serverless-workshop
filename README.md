@@ -1,5 +1,11 @@
 # Production-ready Serverless Workshop
 
+This project was created based on, and as part of Yan Cui's [Production Ready Serverless Workshop](https://productionreadyserverless.com/) (January 2023).
+
+For additional information please check the [/docs](./docs) folder.
+
+----
+
 ## Useful Commands
 
 ### Setup and Operation
@@ -65,4 +71,16 @@ This has been documented here on [GitHub serverless-api-gateway-throttling Issue
 
 ```shell
 sls reset-all-endpoint-settings
+```
+
+----
+
+## Additional Commands
+
+### Development and Debugging
+
+#### Invoke Functions Locally
+
+```shell
+npx sls invoke local --function get-index
 ```
