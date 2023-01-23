@@ -1,4 +1,7 @@
 const DocumentClient = require('aws-sdk/clients/dynamodb').DocumentClient
+const { metricScope, Unit } = require('aws-embedded-metrics')
+const constants = require('../common/constants')
+
 const dynamodb = new DocumentClient()
 
 const defaultResults = process.env.defaultResults || 8
@@ -18,7 +21,13 @@ const findRestaurantsByTheme = async (theme, count) => {
     return resp.Items
 }
 
-module.exports.handler = async (event, context) => {
+module.exports.handler =  metricScope(metrics =>
+  async (event, context) => {
+    metrics.setNamespace(constants.APP_NAMESPACE)
+    metrics.putDimensions(constants.APP_DIMENSION_LAMBDA)
+
+    const start = Date.now()
+
     const req = JSON.parse(event.body)
     const theme = req.theme
     const restaurants = await findRestaurantsByTheme(theme, defaultResults)
@@ -27,5 +36,11 @@ module.exports.handler = async (event, context) => {
         body: JSON.stringify(restaurants)
     }
 
+    const end = Date.now()
+
+    metrics.putMetric(constants.METRIC_LATENCY, end - start, Unit.Milliseconds)
+    metrics.setProperty("RequestId", context.awsRequestId)
+    metrics.setProperty("ApiGatewayRequestId", event.requestContext.requestId)
+
     return response
-}
+})
