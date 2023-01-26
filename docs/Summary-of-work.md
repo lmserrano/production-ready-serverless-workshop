@@ -24,3 +24,13 @@ The parts and steps below have been adapted based on the original roadmap, its s
 - Separate Serverless resources across multiple files
 - Web Application Firewall (WAF) rate-based limiting rules and `serverless-associate-waf`
 - Alerts and CloudWatch Dashboards with `serverless-plugin-aws-alerts`
+
+## Part 2 - Testing and CI/CD
+
+- Integration tests
+  - `jest` and `@types/jest` for test specs
+  - `cheerio` for HTML parsing
+  - `awscred` for resolving AWS credentials and signing of HTTP requests with AWS IAM roles
+  - `lodash` for mirroring behavior of HTTP client `axios` which will be later used in implementation of acceptance tests
+  - Additional libs like `cross-env` and `uuid`
+
