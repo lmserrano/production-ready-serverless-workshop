@@ -28,9 +28,14 @@ The parts and steps below have been adapted based on the original roadmap, its s
 ## Part 2 - Testing and CI/CD
 
 - Integration tests
+  - Local invocation, using external dependencies
   - `jest` and `@types/jest` for test specs
   - `cheerio` for HTML parsing
   - `awscred` for resolving AWS credentials and signing of HTTP requests with AWS IAM roles
   - `lodash` for mirroring behavior of HTTP client `axios` which will be later used in implementation of acceptance tests
   - Additional libs like `cross-env` and `uuid`
-
+- Acceptance tests
+  - Remote invocation (via endpoint)
+  - `aws4` for signing requests with our IAM credentials
+  - `chance` for generating random names
+  - Invoking endpoints protected by a Cognito custom authorizer (using Cognito Server Client Id)

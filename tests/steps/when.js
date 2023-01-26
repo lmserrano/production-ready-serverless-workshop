@@ -96,11 +96,21 @@ const we_invoke_get_restaurants = async () => {
             throw new Error(`unsupported mode: ${mode}`)
     }
 }
-const we_invoke_search_restaurants = theme => {
+const we_invoke_search_restaurants = async (theme, user) => {
+    const body = JSON.stringify({ theme })
     let event = generateEvent({
-        body: JSON.stringify({ theme })
+        body: body
     })
-    return viaHandler(event, 'search-restaurants')
+
+    switch (mode) {
+        case 'handler':
+            return await viaHandler(event, 'search-restaurants')
+        case 'http':
+            const auth = user.idToken
+            return await viaHttp('restaurants/search', 'POST', { body, auth })
+        default:
+            throw new Error(`unsupported mode: ${mode}`)
+    }
 }
 
 module.exports = {
