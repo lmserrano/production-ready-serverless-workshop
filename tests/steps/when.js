@@ -86,7 +86,16 @@ const we_invoke_get_index = async () => {
             throw new Error('unsupported mode: ${mode}')
     }
 }
-const we_invoke_get_restaurants = () => viaHandler(generateEvent(), 'get-restaurants')
+const we_invoke_get_restaurants = async () => {
+    switch (mode) {
+        case 'handler':
+            return await viaHandler(generateEvent(), 'get-restaurants')
+        case 'http':
+            return await viaHttp('restaurants', 'GET', { iam_auth: true })
+        default:
+            throw new Error(`unsupported mode: ${mode}`)
+    }
+}
 const we_invoke_search_restaurants = theme => {
     let event = generateEvent({
         body: JSON.stringify({ theme })
