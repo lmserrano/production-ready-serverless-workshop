@@ -35,3 +35,19 @@ This file logs the points of the workshop for which deviations of the planned ro
     - Make sure that the Node version you are using matches everywhere. To avoid issues in CI/CD, I've added an `engine` field to the JSON, specifying the NPM and Node.js versions.
       - Note: I've attempted to update everything to Node.js 18 but then rolled back since it's not recommended because `aws-sdk` and its usage need to be updated accordingly (otherwise the sdk v2 needs to be packaged and provided together with the lambda functions)
       - Note: The `npm ci` command was failing with Node.js 14, with: `npm ERR! Cannot read property 'aws-embedded-metrics' of undefined` and so I've updated everything to Node.js 16, since it is the latest updated runtime with support for aws-sdk v2 in Lambdas
+    - In order for the steps with a temporary environment to work, it is also necessary to add a step to insert the seed data into the temporary environment:
+      ```yaml
+      # ...
+      # this generates the .env file for the 'ci-dev' stage
+      - name: export env
+        run: npx sls export-env --all -s ci-dev
+
+      # apply seed data to ci-dev stage
+      - name: add seed data
+        run: node seed-restaurants.js
+
+      # this runs the integration test against the 'ci-dev' stage
+      - name: run integration test
+        run: npx cross-env TEST_MODE=handler jest
+      # ...
+      ```

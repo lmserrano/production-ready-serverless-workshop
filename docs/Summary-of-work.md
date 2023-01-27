@@ -39,3 +39,6 @@ The parts and steps below have been adapted based on the original roadmap, its s
   - `aws4` for signing requests with our IAM credentials
   - `chance` for generating random names
   - Invoking endpoints protected by a Cognito custom authorizer (using Cognito Server Client Id)
+- CI/CD with GitHub Actions
+  - AWS Identity Provider and Role configuration for allowing the repository's GitHub Action(s) access
+  - GitHub Workflow for deploying temporary environments, run all tests, and deploy
