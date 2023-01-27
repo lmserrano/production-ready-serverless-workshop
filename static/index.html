@@ -25,11 +25,13 @@
             left: 0;
             position: absolute;
         }
+
         .restaurantsDiv {
             background-color: #ffffff;
             width: 100%;
             height: auto;
         }
+
         .dayOfWeek {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 32px;
@@ -38,6 +40,7 @@
             display: flex;
             justify-content: center;
         }
+
         .column-container {
             padding: 0;
             margin: 0;
@@ -47,6 +50,7 @@
             flex-wrap: wrap;
             justify-content: center;
         }
+
         .row-container {
             padding: 5px;
             margin: 5px;
@@ -56,6 +60,7 @@
             flex-wrap: wrap;
             justify-content: center;
         }
+
         .item {
             padding: 5px;
             height: auto;
@@ -65,6 +70,7 @@
             flex-wrap: wrap;
             justify-content: center;
         }
+
         .restaurant {
             background-color: #00a8f7;
             border-radius: 10px;
@@ -78,214 +84,221 @@
             display: flex;
             justify-content: center;
         }
+
         .restaurant-name {
             font-size: 24px;
-            font-family:Arial, Helvetica, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             color: #ffffff;
             padding: 10px;
             margin: 0px;
         }
+
         .restaurant-image {
             padding-top: 0px;
             margin-top: 0px;
         }
+
         .row-container-left {
             list-style: none;
             display: flex;
             flex-flow: row;
             justify-content: flex-start;
         }
+
         .menu-text {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 24px;
             font-weight: bold;
             color: white;
         }
+
         .text-trail-space {
             margin-right: 10px;
         }
+
         .hidden {
             display: none;
         }
 
         label, button, input {
-            display:block;
+            display: block;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 18px;
         }
 
         fieldset {
-            padding:0;
-            border:0;
-            margin-top:25px;
+            padding: 0;
+            border: 0;
+            margin-top: 25px;
         }
 
     </style>
 
     <script>
-        const AWS_REGION = '{{awsRegion}}';
-        const COGNITO_USER_POOL_ID = '{{cognitoUserPoolId}}';
-        const CLIENT_ID = '{{cognitoClientId}}';
-        const SEARCH_URL = '{{& searchUrl}}';
+      const AWS_REGION = '{{awsRegion}}'
+      const COGNITO_USER_POOL_ID = '{{cognitoUserPoolId}}'
+      const CLIENT_ID = '{{cognitoClientId}}'
+      const SEARCH_URL = '{{& searchUrl}}'
 
-        var regDialog, regForm;
-        var verifyDialog;
-        var regCompleteDialog;
-        var signInDialog;
-        var userPool, cognitoUser;
-        var idToken;
+      var regDialog, regForm
+      var verifyDialog
+      var regCompleteDialog
+      var signInDialog
+      var userPool, cognitoUser
+      var idToken
 
-        function toggleSignOut (enable) {
-            enable === true ? $('#sign-out').show() : $('#sign-out').hide();
+      function toggleSignOut (enable) {
+        enable === true ? $('#sign-out').show() : $('#sign-out').hide()
+      }
+
+      function toggleSignIn (enable) {
+        enable === true ? $('#sign-in').show() : $('#sign-in').hide()
+      }
+
+      function toggleRegister (enable) {
+        enable === true ? $('#register').show() : $('#register').hide()
+      }
+
+      function init () {
+        AWS.config.region = AWS_REGION
+        AWSCognito.config.region = AWS_REGION
+
+        var data = {
+          UserPoolId: COGNITO_USER_POOL_ID,
+          ClientId: CLIENT_ID,
         }
+        userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(data)
+        cognitoUser = userPool.getCurrentUser()
 
-        function toggleSignIn (enable) {
-            enable === true ? $('#sign-in').show() : $('#sign-in').hide();
-        }
-
-        function toggleRegister (enable) {
-            enable === true ? $('#register').show() : $('#register').hide();
-        }
-
-        function init() {
-            AWS.config.region = AWS_REGION;
-            AWSCognito.config.region = AWS_REGION;
-
-            var data = {
-                UserPoolId : COGNITO_USER_POOL_ID,
-                ClientId : CLIENT_ID
-            };
-            userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(data);
-            cognitoUser = userPool.getCurrentUser();
-
-            if (cognitoUser != null) {
-                cognitoUser.getSession(function(err, session) {
-                    if (err) {
-                        alert(err);
-                        return;
-                    }
-
-                    idToken = session.idToken.jwtToken;
-                    console.log('idToken: ' + idToken);
-                    console.log('session validity: ' + session.isValid());
-                });
-
-                toggleSignOut(true);
-                toggleSignIn(false);
-                toggleRegister(false);
-            } else {
-                toggleSignOut(false);
-                toggleSignIn(true);
-                toggleRegister(true);
+        if (cognitoUser != null) {
+          cognitoUser.getSession(function (err, session) {
+            if (err) {
+              alert(err)
+              return
             }
+
+            idToken = session.idToken.jwtToken
+            console.log('idToken: ' + idToken)
+            console.log('session validity: ' + session.isValid())
+          })
+
+          toggleSignOut(true)
+          toggleSignIn(false)
+          toggleRegister(false)
+        } else {
+          toggleSignOut(false)
+          toggleSignIn(true)
+          toggleRegister(true)
         }
+      }
 
-        function addUser() {
-            var firstName = $("#first-name")[0].value;
-            var lastName = $("#last-name")[0].value;
-            var username = $("#username")[0].value;
-            var password = $("#password")[0].value;
-            var email = $("#email")[0].value;
+      function addUser () {
+        var firstName = $('#first-name')[0].value
+        var lastName = $('#last-name')[0].value
+        var username = $('#username')[0].value
+        var password = $('#password')[0].value
+        var email = $('#email')[0].value
 
-            var attributeList = [
-                new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute({
-                    Name : 'email', Value : email
-                }),
-                new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute({
-                    Name : 'given_name', Value : firstName
-                }),
-                new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute({
-                    Name : 'family_name', Value : lastName
-                }),
-            ];
+        var attributeList = [
+          new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute({
+            Name: 'email', Value: email,
+          }),
+          new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute({
+            Name: 'given_name', Value: firstName,
+          }),
+          new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute({
+            Name: 'family_name', Value: lastName,
+          }),
+        ]
 
-            userPool.signUp(username, password, attributeList, null, function(err, result){
-                if (err) {
-                    alert(err);
-                    return;
-                }
-                cognitoUser = result.user;
-                console.log('user name is ' + cognitoUser.getUsername());
+        userPool.signUp(username, password, attributeList, null, function (err, result) {
+          if (err) {
+            alert(err)
+            return
+          }
+          cognitoUser = result.user
+          console.log('user name is ' + cognitoUser.getUsername())
 
-                regDialog.dialog("close");
-                verifyDialog.dialog("open");
-            });
+          regDialog.dialog('close')
+          verifyDialog.dialog('open')
+        })
+      }
+
+      function confirmUser () {
+        var verificationCode = $('#verification-code')[0].value
+        cognitoUser.confirmRegistration(verificationCode, true, function (err, result) {
+          if (err) {
+            alert(err)
+            return
+          }
+          console.log('verification call result: ' + result)
+
+          verifyDialog.dialog('close')
+          regCompleteDialog.dialog('open')
+        })
+      }
+
+      function authenticateUser () {
+        var username = $('#sign-in-username')[0].value
+        var password = $('#sign-in-password')[0].value
+
+        var authenticationData = {
+          Username: username,
+          Password: password,
         }
-
-        function confirmUser() {
-            var verificationCode = $("#verification-code")[0].value;
-            cognitoUser.confirmRegistration(verificationCode, true, function(err, result) {
-                if (err) {
-                    alert(err);
-                    return;
-                }
-                console.log('verification call result: ' + result);
-
-                verifyDialog.dialog("close");
-                regCompleteDialog.dialog("open");
-            });
+        var authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(
+          authenticationData)
+        var userData = {
+          Username: username,
+          Pool: userPool,
         }
+        var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData)
 
-        function authenticateUser() {
-            var username = $("#sign-in-username")[0].value;
-            var password = $("#sign-in-password")[0].value;
+        cognitoUser.authenticateUser(authenticationDetails, {
+          onSuccess: function (result) {
+            console.log('access token : ' + result.getAccessToken().getJwtToken())
+            /*Use the idToken for Logins Map when Federating User Pools with Cognito Identity or when passing through an Authorization Header to an API Gateway Authorizer*/
+            idToken = result.idToken.jwtToken
+            console.log('idToken : ' + idToken)
 
-            var authenticationData = {
-                Username : username,
-                Password : password,
-            };
-            var authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
-            var userData = {
-                Username : username,
-                Pool : userPool
-            };
-            var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+            signInDialog.dialog('close')
+            toggleRegister(false)
+            toggleSignIn(false)
+            toggleSignOut(true)
+          },
 
-            cognitoUser.authenticateUser(authenticationDetails, {
-                onSuccess: function (result) {
-                    console.log('access token : ' + result.getAccessToken().getJwtToken());
-                    /*Use the idToken for Logins Map when Federating User Pools with Cognito Identity or when passing through an Authorization Header to an API Gateway Authorizer*/
-                    idToken = result.idToken.jwtToken;
-                    console.log('idToken : ' + idToken);
+          onFailure: function (err) {
+            alert(err)
+          },
+        })
+      }
 
-                    signInDialog.dialog("close");
-                    toggleRegister(false);
-                    toggleSignIn(false);
-                    toggleSignOut(true);
-                },
-
-                onFailure: function(err) {
-                    alert(err);
-                }
-            });
+      function signOut () {
+        if (cognitoUser != null) {
+          cognitoUser.signOut()
+          toggleRegister(true)
+          toggleSignIn(true)
+          toggleSignOut(false)
         }
+      }
 
-        function signOut() {
-            if (cognitoUser != null) {
-                cognitoUser.signOut();
-                toggleRegister(true);
-                toggleSignIn(true);
-                toggleSignOut(false);
-            }
-        }
+      function searchRestaurants () {
+        var theme = $('#theme')[0].value
 
-        function searchRestaurants() {
-            var theme = $("#theme")[0].value;
+        var xhr = new XMLHttpRequest()
+        xhr.open('POST', SEARCH_URL, true)
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        xhr.setRequestHeader('Authorization', idToken)
+        xhr.send(JSON.stringify({ theme }))
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', SEARCH_URL, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader("Authorization", idToken);
-            xhr.send(JSON.stringify({ theme }));
+        xhr.onreadystatechange = function (e) {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            var restaurants = JSON.parse(xhr.responseText)
+            var restaurantsList = $('#restaurantsUl')
+            restaurantsList.empty()
 
-            xhr.onreadystatechange = function (e) {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var restaurants = JSON.parse(xhr.responseText);
-                    var restaurantsList = $("#restaurantsUl");
-                    restaurantsList.empty();
-
-                    for (var restaurant of restaurants) {
-                        restaurantsList.append(`
+            for (var restaurant of restaurants) {
+              restaurantsList.append(`
               <li class="restaurant">
                 <ul class="column-container">
                     <li class="item restaurant-name">${restaurant.name}</li>
@@ -294,87 +307,87 @@
                     </li>
                 </ul>
               </li>
-              `);
-                    }
+              `)
+            }
 
-                } else if (xhr.readyState === 4) {
-                    alert(xhr.responseText);
-                }
-            };
+          } else if (xhr.readyState === 4) {
+            alert(xhr.responseText)
+          }
         }
+      }
 
-        $(document).ready(function() {
-            regDialog = $("#reg-dialog-form").dialog({
-                autoOpen: false,
-                modal: true,
-                buttons: {
-                    "Create an account": addUser,
-                    Cancel: function() {
-                        regDialog.dialog("close");
-                    }
-                },
-                close: function() {
-                    regForm[0].reset();
-                }
-            });
+      $(document).ready(function () {
+        regDialog = $('#reg-dialog-form').dialog({
+          autoOpen: false,
+          modal: true,
+          buttons: {
+            'Create an account': addUser,
+            Cancel: function () {
+              regDialog.dialog('close')
+            },
+          },
+          close: function () {
+            regForm[0].reset()
+          },
+        })
 
-            regForm = regDialog.find("form").on("submit", function(event) {
-                event.preventDefault();
-                addUser();
-            });
+        regForm = regDialog.find('form').on('submit', function (event) {
+          event.preventDefault()
+          addUser()
+        })
 
-            $("#register").on("click", function() {
-                regDialog.dialog("open");
-            });
+        $('#register').on('click', function () {
+          regDialog.dialog('open')
+        })
 
-            verifyDialog = $("#verify-dialog-form").dialog({
-                autoOpen: false,
-                modal: true,
-                buttons: {
-                    "Confirm registration": confirmUser,
-                    Cancel: function() {
-                        verifyDialog.dialog("close");
-                    }
-                },
-                close: function() {
-                    $(this).dialog("close");
-                }
-            });
+        verifyDialog = $('#verify-dialog-form').dialog({
+          autoOpen: false,
+          modal: true,
+          buttons: {
+            'Confirm registration': confirmUser,
+            Cancel: function () {
+              verifyDialog.dialog('close')
+            },
+          },
+          close: function () {
+            $(this).dialog('close')
+          },
+        })
 
-            regCompleteDialog = $("#registered-message").dialog({
-                autoOpen: false,
-                modal: true,
-                buttons: {
-                    Ok: function() {
-                        $(this).dialog("close");
-                    }
-                }
-            });
+        regCompleteDialog = $('#registered-message').dialog({
+          autoOpen: false,
+          modal: true,
+          buttons: {
+            Ok: function () {
+              $(this).dialog('close')
+            },
+          },
+        })
 
-            signInDialog = $("#sign-in-form").dialog({
-                autoOpen: false,
-                modal: true,
-                buttons: {
-                    "Sign in": authenticateUser,
-                    Cancel: function() {
-                        signInDialog.dialog("close");
-                    }
-                },
-                close: function() {
-                    $(this).dialog("close");
-                }
-            });
+        signInDialog = $('#sign-in-form').dialog({
+          autoOpen: false,
+          modal: true,
+          buttons: {
+            'Sign in': authenticateUser,
+            Cancel: function () {
+              signInDialog.dialog('close')
+            },
+          },
+          close: function () {
+            $(this).dialog('close')
+          },
+        })
 
-            $("#sign-in").on("click", function() {
-                signInDialog.dialog("open");
-            });
+        $('#sign-in').on('click', function () {
+          signInDialog.dialog('open')
+        })
 
-            $("#sign-out").on("click", function() {
-                signOut();
-            })
+        $('#sign-out').on('click', function () {
+          signOut()
+        })
 
-            init();
-        });
+        init()
+      })
 
     </script>
 </head>

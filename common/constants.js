@@ -1,6 +1,6 @@
 module.exports = Object.freeze({
-    APP_NAMESPACE: 'prod-serverless-workshop',
-    APP_DIMENSION_LAMBDA: { Service: "lambda-emf-demo" }, // lambda-emf-demo
+  APP_NAMESPACE: 'prod-serverless-workshop',
+  APP_DIMENSION_LAMBDA: { Service: 'lambda-emf-demo' }, // lambda-emf-demo
 
-    METRIC_LATENCY: 'latency'
-});
+  METRIC_LATENCY: 'latency',
+})

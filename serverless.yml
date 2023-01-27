@@ -23,10 +23,10 @@ custom:
     maxRequestsPerSecond: 1000
     maxConcurrentRequests: 500
 
-#  # Disabled WAF Association for now, since WAF is not being created
-#  associateWaf:
-#    name: MyWAFRegionalWebACL
-#    version: Regional #(optional) Regional | V2
+  #  # Disabled WAF Association for now, since WAF is not being created
+  #  associateWaf:
+  #    name: MyWAFRegionalWebACL
+  #    version: Regional #(optional) Regional | V2
 
   alerts:
     stages:
@@ -46,9 +46,9 @@ custom:
       - functionThrottles
       - functionInvocations
       - functionDuration
-#      # Custom
-#      - restaurantsSearchErrors
-#      - restaurantsSearchLatency
+    #      # Custom
+    #      - restaurantsSearchErrors
+    #      - restaurantsSearchLatency
     definitions:
       # Fine-tuning default alarms
       functionInvocations:

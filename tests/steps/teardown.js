@@ -5,7 +5,7 @@ const an_authenticated_user = async (user) => {
 
   let req = {
     UserPoolId: process.env.cognito_user_pool_id,
-    Username: user.username
+    Username: user.username,
   }
   await cognito.adminDeleteUser(req).promise()
 
@@ -13,5 +13,5 @@ const an_authenticated_user = async (user) => {
 }
 
 module.exports = {
-  an_authenticated_user
+  an_authenticated_user,
 }

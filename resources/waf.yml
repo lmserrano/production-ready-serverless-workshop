@@ -8,7 +8,7 @@ Resources:
       Scope: REGIONAL
       Description: WAF Regional Web ACL to Prevent HTTP Flood DDos Attack
       DefaultAction:
-        Allow: {}
+        Allow: { }
       VisibilityConfig:
         SampledRequestsEnabled: true
         CloudWatchMetricsEnabled: true
@@ -20,7 +20,7 @@ Resources:
         - Name: HTTP-Flood-Prevent-Rule
           Priority: 0
           Action:
-            Block: {}
+            Block: { }
           VisibilityConfig:
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true

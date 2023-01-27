@@ -3,7 +3,9 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "The Root Schema",
-  "required": ["theme"],
+  "required": [
+    "theme"
+  ],
   "properties": {
     "theme": {
       "type": "string",
