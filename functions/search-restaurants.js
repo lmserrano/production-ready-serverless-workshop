@@ -33,7 +33,7 @@ module.exports.handler = metricScope(metrics =>
     const restaurants = await findRestaurantsByTheme(theme, defaultResults)
     const response = {
       statusCode: 200,
-      body: JSON.stringify(restaurants),
+      body: JSON.stringify(restaurants)
     }
 
     const end = Date.now()

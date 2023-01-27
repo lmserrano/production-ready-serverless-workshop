@@ -54,7 +54,7 @@ module.exports.handler = async (event, context) => {
     headers: {
       'content-type': 'text/html; charset=UTF-8',
     },
-    body: html,
+    body: html
   }
 
   return response

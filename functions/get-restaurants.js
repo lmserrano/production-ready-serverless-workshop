@@ -20,7 +20,7 @@ module.exports.handler = async (event, context) => {
   const restaurants = await getRestaurants(defaultResults)
   const response = {
     statusCode: 200,
-    body: JSON.stringify(restaurants),
+    body: JSON.stringify(restaurants)
   }
 
   return response
