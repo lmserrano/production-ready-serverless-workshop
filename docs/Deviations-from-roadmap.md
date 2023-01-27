@@ -18,3 +18,15 @@ This file logs the points of the workshop for which deviations of the planned ro
 - Observed: The optional metrics implementation added to that function for measuring database query latency require `event` and `context` to have certain fields
 - Actions Required: Update the `when.js` tooling, so that `context.requestId` and `event.requestContext.requestId` are defined. Ideally use `uuid` dev dependency to generate them on a per `we_invoke_*` basis
 
+### Exercise: Set up CI/CD with GitHub Actions
+
+- Location/Step: On `Add GitHub Actions config`, step `4`, after the push, when the GitHub workflow is supposed to be successful
+- Observed: The GitHub Actions workflow `deploy` defined in `dev.yml` triggers a warning with:
+  ```
+  Node.js 12 actions are deprecated. Please update the following actions to use Node.js 16: actions/checkout@v2, actions/setup-node@v1, aws-actions/configure-aws-credentials@master. For more information see: https://github.blog/changelog/2022-09-22-github-actions-all-actions-will-begin-running-on-node16-instead-of-node12/.
+  ```
+- Actions Required: Update the `.github/workflows/dev.yml`, swapping the following:
+  - `actions/checkout@v2` should become: `actions/checkout@v3`
+  - `actions/setup-node@v1` should become: `actions/setup-node@v3`
+  - `aws-actions/configure-aws-credentials@master` should become: `aws-actions/configure-aws-credentials@v1-node16`
+  - Small note: on the GitHub Workflows templates related with Node, `node-version: 16` is presented without string, so we could also change the `node-version: '14'` to number format, although that's not necessary nor relevant
