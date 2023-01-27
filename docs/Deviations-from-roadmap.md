@@ -30,3 +30,6 @@ This file logs the points of the workshop for which deviations of the planned ro
   - `actions/setup-node@v1` should become: `actions/setup-node@v3`
   - `aws-actions/configure-aws-credentials@master` should become: `aws-actions/configure-aws-credentials@v1-node16`
   - Small note: on the GitHub Workflows templates related with Node, `node-version: 16` is presented without string, so we could also change the `node-version: '14'` to number format, although that's not necessary nor relevant
+  - Other Important Notes:
+    - Make sure that `aws-region: <REGION>` is set to the region you are using
+    - Make sure that the Node version you are using matches everywhere. To avoid issues in CI/CD, I've added an `engine` field to the JSON, specifying the NPM and Node.js versions, and used the chance to update everything to Node.js 18
