@@ -1,0 +1,21 @@
+Resources:
+  GetRestaurantsConfig:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /${self:service}/${sls:stage}/get-restaurants/config
+      Description: get-restaurants configuration for ${self:service}/${sls:stage}
+      Type: String
+      Value: |
+        {
+          "defaultResults": 8
+        }
+  SearchRestaurantsConfig:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /${self:service}/${sls:stage}/search-restaurants/config
+      Description: search-restaurants configuration for ${self:service}/${sls:stage}
+      Type: String
+      Value: |
+        {
+          "defaultResults": 8
+        }

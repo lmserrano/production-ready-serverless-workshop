@@ -45,11 +45,11 @@ jobs:
       - name: add seed data
         run: node seed-restaurants.js
 
-      # create SSM parameters
-      - name: Create SSM Parameters
-        run: |
-          aws ssm put-parameter --name "/workshop-luisserrano/ci-dev/get-restaurants/config" --value "{ \"defaultResults\": 8 }" --type String
-          aws ssm put-parameter --name "/workshop-luisserrano/ci-dev/search-restaurants/config" --value "{ \"defaultResults\": 8 }" --type String
+#      # create SSM parameters
+#      - name: Create SSM Parameters
+#        run: |
+#          aws ssm put-parameter --name "/workshop-luisserrano/ci-dev/get-restaurants/config" --value "{ \"defaultResults\": 8 }" --type String
+#          aws ssm put-parameter --name "/workshop-luisserrano/ci-dev/search-restaurants/config" --value "{ \"defaultResults\": 8 }" --type String
 
       # this runs the integration test against the 'ci-dev' stage
       - name: run integration test
@@ -59,10 +59,10 @@ jobs:
       - name: run acceptance tests
         run: npx cross-env TEST_MODE=http jest
 
-      # delete SSM parameters
-      - name: Create SSM Parameters
-        run: |
-          aws ssm delete-parameters --names "/workshop-luisserrano/ci-dev/get-restaurants/config" "/workshop-luisserrano/ci-dev/search-restaurants/config"
+#      # delete SSM parameters
+#      - name: Create SSM Parameters
+#        run: |
+#          aws ssm delete-parameters --names "/workshop-luisserrano/ci-dev/get-restaurants/config" "/workshop-luisserrano/ci-dev/search-restaurants/config"
 
       # delete the 'ci-dev' stage
       - name: destroy temp environment

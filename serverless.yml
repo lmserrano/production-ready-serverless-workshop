@@ -179,7 +179,7 @@ functions:
 resources:
   # Disabled WAF Creation for costing purposes
   #- ${file(./resources/waf.yml)}
-
+  - ${file(./resources/ssm-parameters.yml)}
   - Resources:
       RestaurantsTable:
         Type: AWS::DynamoDB::Table
