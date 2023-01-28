@@ -53,3 +53,14 @@ This file logs the points of the workshop for which deviations of the planned ro
         run: npx cross-env TEST_MODE=handler jest
       # ...
       ```
+
+#### AWS Systems Manager (SSM) Parameter Store Usage (Warning)
+
+- Location/Step: On point `Load SSM parameters at runtime`, point `10.` running the integration tests should pass without warnings.
+- Observed: The integration tests still pass but there is the following warning, related with the newly added usage of `middy`:
+  ```
+  A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.
+  ```
+- Actions Required: Unknown. [Middy's Documentaiton on Testing](https://middy.js.org/docs/intro/testing) has 3 suggestions, one of which being: `middy(handler, { timeoutEarlyInMillis: 0 })`, but I did not manage to make the warning disappear even when adding it in both function handlers' middy wrappers
+
+
