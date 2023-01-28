@@ -6,6 +6,8 @@ const dynamodb = new DocumentClient()
 
 const { serviceName, stage } = process.env
 const tableName = process.env.restaurants_table
+const middyCacheEnabled = process.env.middy_cache_enableed
+const middyCacheExpiry = process.env.middy_cache_expiry_milliseconds
 
 const getRestaurants = async (count) => {
   console.log(`fetching ${count} restaurants from ${tableName}...`)
@@ -28,8 +30,8 @@ module.exports.handler = middy(async (event, context) => {
 
   return response
 }).use(ssm({
-  cache: true,
-  cacheExpiry: 1 * 60 * 1000, // 1 mins
+  cache: middyCacheEnabled,
+  cacheExpiry: middyCacheExpiry,
   setToContext: true,
   fetchData: {
     config: `/${serviceName}/${stage}/get-restaurants/config`

@@ -114,6 +114,8 @@ provider:
           - .execute-api.${aws:region}.amazonaws.com/${sls:stage}
     serviceName: ${self:service}
     stage: ${sls:stage}
+    middy_cache_enabled: true
+    middy_cache_expiry_milliseconds: ${1 * 60 * 1000} # 1 mins
 
 
 functions:

@@ -54,14 +54,51 @@ This file logs the points of the workshop for which deviations of the planned ro
       # ...
       ```
 
-#### AWS Systems Manager (SSM) Parameter Store Usage (Warning)
+#### AWS Systems Manager (SSM) Parameter Store Usage (Warning but makes GitHub Actions fail)
 
 - Location/Step: On point `Load SSM parameters at runtime`, point `10.` running the integration tests should pass without warnings.
-- Observed: The integration tests still pass but there is the following warning, related with the newly added usage of `middy`:
+- Observed: The integration tests still pass locally but there is the following warning, related with the newly added usage of `middy`:
   ```
   A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.
   ```
-- Actions Required: Unknown. [Middy's Documentaiton on Testing](https://middy.js.org/docs/intro/testing) has 3 suggestions, one of which being: `middy(handler, { timeoutEarlyInMillis: 0 })`, but I did not manage to make the warning disappear even when adding it in both function handlers' middy wrappers
+    - Also, the biggest problem is in GitHub Actions, which start getting stuck and burning processing minutes, until termination or timeout, with:
+      ```
+      Jest did not exit one second after the test run has completed.
+
+      This usually means that there are asynchronous operations that weren't stopped in your tests. Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.
+      ```
+- Actions Required: Disable middy's `cache` and `cacheExpiry` as suggested here: [Middy 4.1.0 causes Jest test runner to never exit. #990](https://github.com/middyjs/middy/issues/990).
+  - Note: [Middy's Documentation on Testing](https://middy.js.org/docs/intro/testing) has 3 suggestions, one of which being: `middy(handler, { timeoutEarlyInMillis: 0 })`, but I did not manage to make the warning disappear even when adding it in both function handlers' middy wrappers
+  - In my case, I have made it configurable through environment variables in `serverless.yml`, which are thus exported and used by the functions, but which are overwritten for tests, as described below:
+    - `serverless.yml` with:
+      ```
+      middy_cache_enabled: true
+      middy_cache_expiry_milliseconds: ${1 * 60 * 1000} # 1 mins
+      ```
+    - Update `.env` by running: `npx sls export-env --all`
+    - Create `.test.env` side by side with it, at root level, with:
+      ```
+      middy_cache_enabled=false
+      middy_cache_expiry_milliseconds=0
+      ```
+    - Create `./tests/setup/setup-tests.js` with:
+      ```
+      const dotenv = require('dotenv')
+
+      dotenv.config({ path: './.test.env' })
+      ```
+    - Update `get-restaurants.js` and `search-restaurants.js` to have:
+      ```
+      const middyCacheEnabled = process.env.middy_cache_enableed
+      const middyCacheExpiry = process.env.middy_cache_expiry_milliseconds
+      ...
+      .use(ssm({
+        cache: middyCacheEnabled,
+        cacheExpiry: middyCacheExpiry,
+        ...
+      }))
+      ```
+      - Note: I've created PR [Update Testing docs with importance of disabling cache #996](https://github.com/middyjs/middy/pull/996) in Middy's repository proposing that this is added to the documentation page, and updated the associated issue [Middy 4.1.0 causes Jest test runner to never exit. #990](https://github.com/middyjs/middy/issues/990#issuecomment-1407457224) with a reference to it.
 
 #### AWS Systems Manager (SSM) Parameter Store Usage in Temporary Environment from GitHub Actions
 
