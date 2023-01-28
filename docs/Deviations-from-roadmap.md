@@ -20,6 +20,8 @@ This file logs the points of the workshop for which deviations of the planned ro
 
 ### Exercise: Set up CI/CD with GitHub Actions
 
+#### CI/CD Configuration Changes
+
 - Location/Step: On `Add GitHub Actions config`, step `4`, after the push, when the GitHub workflow is supposed to be successful
 - Observed: The GitHub Actions workflow `deploy` defined in `dev.yml` triggers a warning with:
   ```
