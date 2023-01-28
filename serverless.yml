@@ -107,6 +107,8 @@ provider:
         - - https://
           - !Ref ApiGatewayRestApi
           - .execute-api.${aws:region}.amazonaws.com/${sls:stage}
+    serviceName: ${self:service}
+    stage: ${sls:stage}
 
 
 functions:

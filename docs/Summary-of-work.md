@@ -42,3 +42,4 @@ The parts and steps below have been adapted based on the original roadmap, its s
 - CI/CD with GitHub Actions
   - AWS Identity Provider and Role configuration for allowing the repository's GitHub Action(s) access
   - GitHub Workflow for deploying temporary environments, run all tests, and deploy
+  - `@middy/core` and `@middy/ssm` for integrating with AWS Systems Manager (SSM) Parameter Store (requires AWS SDK v3 SSM: `@aws-sdk/client-ssm` which only comes pre-bundled in Node.js 18+ Lambda runtimes)
