@@ -84,3 +84,9 @@ sls reset-all-endpoint-settings
 ```shell
 npx sls invoke local --function get-index
 ```
+
+#### Get Logs for Serverless Function (including after Acceptance Tests)
+
+```shell
+npx sls logs -f search-restaurants
+```

@@ -53,6 +53,7 @@ module.exports.handler = middy(metricScope(metrics =>
   cacheExpiry: middyCacheExpiry,
   setToContext: true,
   fetchData: {
-    config: `/${serviceName}/${stage}/search-restaurants/config`
+    config: `/${serviceName}/${stage}/search-restaurants/config`,
+    secretString: `/${serviceName}/${stage}/search-restaurants/secretString`
   }
 }))
