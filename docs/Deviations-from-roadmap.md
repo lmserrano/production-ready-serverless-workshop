@@ -63,4 +63,9 @@ This file logs the points of the workshop for which deviations of the planned ro
   ```
 - Actions Required: Unknown. [Middy's Documentaiton on Testing](https://middy.js.org/docs/intro/testing) has 3 suggestions, one of which being: `middy(handler, { timeoutEarlyInMillis: 0 })`, but I did not manage to make the warning disappear even when adding it in both function handlers' middy wrappers
 
+#### AWS Systems Manager (SSM) Parameter Store Usage in Temporary Environment from GitHub Actions
 
+- Location/Step: After `Publicize service information to Parameter Store`'s last step, if pushing the commits to GitHub, and if the temporary environment was setup in the workflows file for the GitHub Action, then the action will fail because this environment will not have the associated parameters
+- Observed: The temporary `ci-dev` environment is missing the AWS SSM parameters which we manually created before
+- Actions Required: Update the `.github/workflows/dev.yml` file to include steps for creating and deleting them
+  - Note: This is a bit of a temporary workaround/fix, because the ideal is for this to be part of the stack's definition and be provided via CloudFormation template within serverless, but since we may want the values to not be reset across deployments, this workaround looked suitable for the time being.
