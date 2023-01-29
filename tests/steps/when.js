@@ -128,9 +128,18 @@ const we_invoke_place_order = async (user, restaurantName) => {
   }
 }
 
+const we_invoke_notify_restaurant = async (event) => {
+  if (mode === 'handler') {
+    await viaHandler(generateEvent(), 'notify-restaurant')
+  } else {
+    throw new Error('not supported')
+  }
+}
+
 module.exports = {
   we_invoke_get_index,
   we_invoke_get_restaurants,
   we_invoke_search_restaurants,
-  we_invoke_place_order
+  we_invoke_place_order,
+  we_invoke_notify_restaurant
 }
