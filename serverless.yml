@@ -108,6 +108,9 @@ provider:
 #        - Effect: Allow
 #          Action: kms:Decrypt
 #          Resource: ${ssm:/${self:service}/${sls:stage}/kmsArn}
+        - Effect: Allow
+          Action: events:PutEvents
+          Resource: !GetAtt EventBus.Arn
 
   environment:
     rest_api_url:
@@ -181,6 +184,19 @@ functions:
         enabled: true
     environment:
       restaurants_table: !Ref RestaurantsTable
+
+  place-order:
+    handler: functions/place-order.handler
+    events:
+      - http:
+          path: /orders
+          method: post
+          authorizer:
+            name: CognitoAuthorizer
+            type: COGNITO_USER_POOLS
+            arn: !GetAtt CognitoUserPool.Arn
+    environment:
+      bus_name: !Ref EventBus
 
 resources:
   # Disabled WAF Creation for costing purposes
