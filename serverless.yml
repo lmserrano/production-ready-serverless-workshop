@@ -6,6 +6,12 @@ custom:
   name: luisserrano
   export-env:
     overwrite: true
+  exportOutputs:
+    include:
+      - E2eTestQueueUrl
+      - CognitoUserPoolServerClientId
+    output:
+      file: ./.env-outputs
 
   # Enable or disable caching globally
   apiGatewayCaching:
@@ -382,6 +388,7 @@ resources:
 
 plugins:
   - serverless-export-env
+  - serverless-export-outputs
   - serverless-api-gateway-caching
   - serverless-api-gateway-throttling
   - serverless-associate-waf

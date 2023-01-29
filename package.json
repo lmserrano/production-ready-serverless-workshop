@@ -28,6 +28,7 @@
     "serverless-api-gateway-throttling": "^2.0.2",
     "serverless-associate-waf": "^1.2.1",
     "serverless-export-env": "^2.2.0",
+    "serverless-export-outputs": "^1.0.2",
     "serverless-plugin-aws-alerts": "^1.7.5",
     "uuid": "^9.0.0"
   },

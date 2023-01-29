@@ -61,7 +61,8 @@ The parts and steps below have been adapted based on the original roadmap, its s
 
 - Setup a custom EventBridge Bus and Simple Notification System (SNS) topics
 - EventBridge Producer and Consumers (with Lambda Functions)
-- Integration and Acceptance Tests (workarounds for the latter)
+- Integration and Acceptance Tests
+  - Acceptance Tests using conditional infrastructure references by vars exported via `serverless-export-outputs` plugin
 - Real-time visualization of SNS notifications and EventBus events with [lumigo-cli](https://www.npmjs.com/package/lumigo-cli) (global/local dependency) with commands:
   - `tail-sns`
   - `tail-eventbridge-bus`
