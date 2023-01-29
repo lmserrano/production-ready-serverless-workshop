@@ -288,6 +288,9 @@ resources:
         Properties:
           Name: order_events_${sls:stage}_${self:custom.name}
 
+      RestaurantNotificationTopic:
+        Type: AWS::SNS::Topic
+
   - Outputs:
       RestaurantsTableName:
         Value: !Ref RestaurantsTable
@@ -306,6 +309,12 @@ resources:
 
       EventBusName:
         Value: !Ref EventBus
+
+      RestaurantNotificationTopicName:
+        Value: !GetAtt RestaurantNotificationTopic.TopicName
+
+      RestaurantNotificationTopicArn:
+        Value: !Ref RestaurantNotificationTopic
 
 plugins:
   - serverless-export-env
