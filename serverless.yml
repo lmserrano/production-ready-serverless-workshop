@@ -90,6 +90,9 @@ provider:
   apiGateway:
     metrics: true
 
+  eventBridge:
+    useCloudFormation: true
+
   iam:
     role:
       statements:
@@ -111,6 +114,9 @@ provider:
         - Effect: Allow
           Action: events:PutEvents
           Resource: !GetAtt EventBus.Arn
+        - Effect: Allow
+          Action: sns:Publish
+          Resource: !Ref RestaurantNotificationTopic
 
   environment:
     rest_api_url:
@@ -198,6 +204,20 @@ functions:
             arn: !GetAtt CognitoUserPool.Arn
     environment:
       bus_name: !Ref EventBus
+
+  notify-restaurant:
+    handler: functions/notify-restaurant.handler
+    events:
+      - eventBridge:
+          eventBus: !Ref EventBus
+          pattern:
+            source:
+              - big-mouth
+            detail-type:
+              - order_placed
+    environment:
+      bus_name: !Ref EventBus
+      restaurant_notification_topic: !Ref RestaurantNotificationTopic
 
 resources:
   # Disabled WAF Creation for costing purposes
