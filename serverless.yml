@@ -227,9 +227,13 @@ functions:
 resources:
   - Conditions:
       IsE2eTest:
-        Fn::Equals:
-          - ${sls:stage}
-          - dev
+        Fn::Or:
+          - Fn::Equals:
+            - ${sls:stage}
+            - dev
+          - Fn::Equals:
+            - ${sls:stage}
+            - ci-dev
 
   # Disabled WAF Creation for costing purposes
   #- ${file(./resources/waf.yml)}
