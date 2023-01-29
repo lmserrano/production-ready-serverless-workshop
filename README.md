@@ -79,6 +79,14 @@ sls reset-all-endpoint-settings
 
 ### Development and Debugging
 
+#### Installation of Optional Useful Tooling
+
+It is recommended that you have other optional but useful global dependencies available:
+
+```shell
+npm i -g lumigo-cli
+```
+
 #### Invoke Functions Locally
 
 ```shell
@@ -89,4 +97,16 @@ npx sls invoke local --function get-index
 
 ```shell
 npx sls logs -f search-restaurants
+```
+
+#### Visualize SNS Notifications in Console
+
+```shell
+lumigo-cli tail-sns -r "eu-west-1" -n "workshop-luisserrano-dev-RestaurantNotificationTopic-IuiDAZw3TMX6"
+```
+
+#### Visualize EventBridge events in Console
+
+```shell
+lumigo-cli tail-eventbridge-bus -r "eu-west-1" -n "order_events_dev_luisserrano"
 ```
