@@ -56,3 +56,6 @@ The parts and steps below have been adapted based on the original roadmap, its s
 - Other things left to explore:
   - Add Middy's validator middleware to implement response validation, to add to the already existing/added serverless' request schema validation models
   - Use `sts:AssumeRole` to mitigate the risk of leaked CI credentials
+
+## Part 3 - Processing events in real-time
+

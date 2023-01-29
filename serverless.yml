@@ -266,6 +266,11 @@ resources:
                 - !Ref ApiGatewayRestApi
                 - .execute-api.${aws:region}.amazonaws.com/${sls:stage}
 
+      EventBus:
+        Type: AWS::Events::EventBus
+        Properties:
+          Name: order_events_${sls:stage}_${self:custom.name}
+
   - Outputs:
       RestaurantsTableName:
         Value: !Ref RestaurantsTable
@@ -281,6 +286,9 @@ resources:
 
       CognitoUserPoolServerClientId:
         Value: !Ref ServerCognitoUserPoolClient
+
+      EventBusName:
+        Value: !Ref EventBus
 
 plugins:
   - serverless-export-env
