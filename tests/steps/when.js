@@ -15,7 +15,7 @@ const viaHandler = async (event, functionName) => {
   const response = await handler(event, context)
   const contentType = _.get(response, 'headers.content-type',
     'application/json')
-  if (response.body && contentType === 'application/json') {
+  if (_.get(response, 'body') && contentType === 'application/json') {
     response.body = JSON.parse(response.body)
   }
   return response
@@ -130,7 +130,7 @@ const we_invoke_place_order = async (user, restaurantName) => {
 
 const we_invoke_notify_restaurant = async (event) => {
   if (mode === 'handler') {
-    await viaHandler(generateEvent(), 'notify-restaurant')
+    await viaHandler(generateEvent(event), 'notify-restaurant')
   } else {
     throw new Error('not supported')
   }
