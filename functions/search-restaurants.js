@@ -54,6 +54,6 @@ module.exports.handler = middy(metricScope(metrics =>
   setToContext: true,
   fetchData: {
     config: `/${serviceName}/${stage}/search-restaurants/config`,
-    secretString: `/${serviceName}/${stage}/search-restaurants/secretString`
+    //secretString: `/${serviceName}/${stage}/search-restaurants/secretString`
   }
 }))
