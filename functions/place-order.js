@@ -1,3 +1,4 @@
+const CorrelationIds = require('@dazn/lambda-powertools-correlation-ids')
 const XRay = require('aws-xray-sdk-core')
 const eventBridge = XRay.captureAWSClient(require('@dazn/lambda-powertools-eventbridge-client'))
 const chance = require('chance').Chance()
@@ -10,7 +11,11 @@ module.exports.handler = wrap(async (event) => {
   const restaurantName = JSON.parse(event.body).restaurantName
 
   const orderId = chance.guid()
-  Log.debug('placing order...', { orderId, restaurantName })
+  const userId = event.requestContext.authorizer.claims.sub
+  CorrelationIds.set('userId', userId)
+  CorrelationIds.set('orderId', orderId)
+  CorrelationIds.set('restaurantName', restaurantName)
+  Log.debug('placing order...')
 
   await eventBridge.putEvents({
     Entries: [{
