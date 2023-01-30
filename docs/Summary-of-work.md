@@ -71,3 +71,7 @@ The parts and steps below have been adapted based on the original roadmap, its s
 ## Part 4 - Observability
 
 - Structured JSON logging (with `dazn-lambda-powertools`)
+- Sample of 1% of debug logs in production (with `lambda-powertools-pattern-basic`)
+  - `@dazn/lambda-powertools-middleware-sample-logging` sampling of debug logs
+  - `@dazn/lambda-powertools-middleware-correlation-ids` extracting of correlation IDs (the `debug-log-enabled` field also allows this at the user transaction level)
+  - `@dazn/lambda-powertools-middleware-log-timeout` emits an error message for when a function times out (which otherwise wouldn't automatically happen)

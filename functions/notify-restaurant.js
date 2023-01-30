@@ -1,4 +1,5 @@
 const Log = require('@dazn/lambda-powertools-logger')
+const wrap = require('@dazn/lambda-powertools-pattern-basic')
 const EventBridge = require('aws-sdk/clients/eventbridge')
 const eventBridge = new EventBridge()
 const SNS = require('aws-sdk/clients/sns')
@@ -7,7 +8,7 @@ const sns = new SNS()
 const busName = process.env.bus_name
 const topicArn = process.env.restaurant_notification_topic
 
-module.exports.handler = async (event) => {
+module.exports.handler = wrap(async (event) => {
   const order = event.detail
   const snsReq = {
     Message: JSON.stringify(order),
@@ -31,4 +32,4 @@ module.exports.handler = async (event) => {
     eventType: 'restaurant_notified',
     busName
   })
-}
+})
