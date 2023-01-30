@@ -106,5 +106,13 @@ This file logs the points of the workshop for which deviations of the planned ro
 - Observed: The temporary `ci-dev` environment is missing the AWS SSM parameters which we manually created before
 - Actions Required: One of (first suggested)
   - Update `serverless.yml` to include the necessary AWS SSM Parameters under `Resources`, since they should be part of the stack
-  - Update the `.github/workflows/dev.yml` file to include steps for creating and deleting them
+  - Not recommended: Update the `.github/workflows/dev.yml` file to include steps for creating and deleting them
     - Note: This is a bit of a temporary workaround/fix, because the ideal is for this to be part of the stack's definition and be provided via CloudFormation template within serverless, but since we may want the values to not be reset across deployments, this workaround looked suitable for the time being.
+
+### Exercise: X-Ray
+
+- Location/Step: On `Fix tests`, on step `1.`, it is suggested to to monkey-patch console.error with an anonymous mock function using jest
+- Observed: Although it is necessary to do this, there is now an alternative available which requires only fine-tuning AWS X-Ray's configuration
+- Actions Required/Suggested: Set the `AWS_XRAY_CONTEXT_MISSING` environment variable to `IGNORE_ERROR` (if set to `LOG_ERROR` you'll enable this default error logging behavior)
+  - This was reported on [Failed to get the current sub/segment from the context #415](https://github.com/aws/aws-xray-sdk-node/issues/415)
+  - This was suggested by someone else in [this comment](https://github.com/aws/aws-xray-sdk-node/issues/415#issuecomment-837423727)
