@@ -75,3 +75,4 @@ The parts and steps below have been adapted based on the original roadmap, its s
   - `@dazn/lambda-powertools-middleware-sample-logging` sampling of debug logs
   - `@dazn/lambda-powertools-middleware-correlation-ids` extracting of correlation IDs (the `debug-log-enabled` field also allows this at the user transaction level)
   - `@dazn/lambda-powertools-middleware-log-timeout` emits an error message for when a function times out (which otherwise wouldn't automatically happen)
+- Enable distributed tracing with X-Ray

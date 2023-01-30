@@ -13,6 +13,9 @@ custom:
     output:
       file: ./.env-outputs
 
+  serverless-iam-roles-per-function:
+    defaultInherit: true
+
   # Specific to @dazn/lambda-powertools-logger
   logLevel:
     prod: INFO
@@ -117,6 +120,19 @@ provider:
     middy_cache_expiry_milliseconds: ${1 * 60 * 1000} # 1 mins
     LOG_LEVEL: ${self:custom.logLevel.${sls:stage}, self:custom.logLevel.default}
     SAMPLE_DEBUG_LOG_RATE: 0.01 # 1% of invocations will have LOG_LEVEL = DEBUG
+
+  tracing:
+    apiGateway: true
+    lambda: true
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "xray:PutTraceSegments"
+            - "xray:PutTelemetryRecords"
+          Resource: "*"
 
 functions:
   get-index:
