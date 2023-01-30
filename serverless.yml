@@ -119,7 +119,7 @@ provider:
     middy_cache_enabled: true
     middy_cache_expiry_milliseconds: ${1 * 60 * 1000} # 1 mins
     LOG_LEVEL: ${self:custom.logLevel.${sls:stage}, self:custom.logLevel.default}
-    SAMPLE_DEBUG_LOG_RATE: 0.01 # 1% of invocations will have LOG_LEVEL = DEBUG
+    SAMPLE_DEBUG_LOG_RATE: 0.1 # 10% of invocations will have LOG_LEVEL = DEBUG
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
 
   tracing:
