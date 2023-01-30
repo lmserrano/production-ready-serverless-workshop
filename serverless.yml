@@ -13,6 +13,11 @@ custom:
     output:
       file: ./.env-outputs
 
+  # Specific to @dazn/lambda-powertools-logger
+  logLevel:
+    prod: INFO
+    default: DEBUG
+
   # Enable or disable caching globally
   apiGatewayCaching:
     enabled: false # disable all cache for now, since it has additional costs and is something that should only be enabled at a later time based on usage
@@ -110,7 +115,7 @@ provider:
     stage: ${sls:stage}
     middy_cache_enabled: true
     middy_cache_expiry_milliseconds: ${1 * 60 * 1000} # 1 mins
-
+    LOG_LEVEL: ${self:custom.logLevel.${sls:stage}, self:custom.logLevel.default}
 
 functions:
   get-index:

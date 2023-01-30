@@ -1,5 +1,6 @@
 const middy = require('@middy/core')
 const ssm = require('@middy/ssm')
+const Log = require('@dazn/lambda-powertools-logger')
 
 const DocumentClient = require('aws-sdk/clients/dynamodb').DocumentClient
 const { metricScope, Unit } = require('aws-embedded-metrics')
@@ -14,6 +15,10 @@ const middyCacheExpiry = process.env.middy_cache_expiry_milliseconds
 
 const findRestaurantsByTheme = async (theme, count) => {
   console.log(`finding (up to ${count}) restaurants with the theme ${theme}...`)
+  Log.debug('finding restaurants', {
+    count,
+    theme
+  })
   const req = {
     TableName: tableName,
     Limit: count,
@@ -22,7 +27,9 @@ const findRestaurantsByTheme = async (theme, count) => {
   }
 
   const resp = await dynamodb.scan(req).promise()
-  console.log(`found ${resp.Items.length} restaurants`)
+  Log.debug('found restaurants', {
+    count: resp.Items.length
+  })
   return resp.Items
 }
 

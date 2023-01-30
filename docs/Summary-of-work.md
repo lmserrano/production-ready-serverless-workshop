@@ -67,3 +67,7 @@ The parts and steps below have been adapted based on the original roadmap, its s
   - `tail-sns`
   - `tail-eventbridge-bus`
 - Move each provider level IAM role to a function-specific dedicated IAM role to minimise the attack surface
+
+## Part 4 - Observability
+
+- Structured JSON logging (with `dazn-lambda-powertools`)

@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-ssm": "^3.259.0",
+    "@dazn/lambda-powertools-logger": "^1.28.1",
     "@middy/core": "^4.2.1",
     "@middy/ssm": "^4.2.1",
     "aws-embedded-metrics": "^4.1.0",
