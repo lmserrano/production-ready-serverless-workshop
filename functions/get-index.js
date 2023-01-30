@@ -6,6 +6,9 @@ const URL = require('url')
 const Log = require('@dazn/lambda-powertools-logger')
 const wrap = require('@dazn/lambda-powertools-pattern-basic')
 
+const AWSXRay = require('aws-xray-sdk-core')
+AWSXRay.captureHTTPsGlobal(require('https'))
+
 const restaurantsApiRoot = process.env.restaurants_api
 const ordersApiRoot = process.env.orders_api
 const cognitoUserPoolId = process.env.cognito_user_pool_id
