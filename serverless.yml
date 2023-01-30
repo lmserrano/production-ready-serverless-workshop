@@ -16,6 +16,10 @@ custom:
   serverless-iam-roles-per-function:
     defaultInherit: true
 
+  lumigo:
+    token: t_efd81af772f74e56b5add
+    nodePackageManager: npm
+
   # Specific to @dazn/lambda-powertools-logger
   logLevel:
     prod: INFO
@@ -459,6 +463,7 @@ plugins:
   - serverless-export-env
   - serverless-export-outputs
   - serverless-iam-roles-per-function
+  - serverless-lumigo
   - serverless-api-gateway-caching
   - serverless-api-gateway-throttling
   - serverless-associate-waf

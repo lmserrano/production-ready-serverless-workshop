@@ -83,3 +83,4 @@ The parts and steps below have been adapted based on the original roadmap, its s
   - Forward correlation IDs with a number of `dazn-lambda-powertools` like-for-like replacement packages for AWS:
     - through EventBridge events with `@dazn/lambda-powertools-eventbridge-client`
 - Custom correlation IDs
+- Auto-instrumenting with the `serverless-lumigo` plugin
