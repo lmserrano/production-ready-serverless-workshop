@@ -16,7 +16,7 @@ This file logs the points of the workshop for which deviations of the planned ro
 
 - Location/Step: On point `4` of the `Add test case for search-restaurants`, the tests were supposed to just pass
 - Observed: The optional metrics implementation added to that function for measuring database query latency require `event` and `context` to have certain fields
-- Actions Required: Update the `when.js` tooling, so that `context.requestId` and `event.requestContext.requestId` are defined. Ideally use `uuid` dev dependency to generate them on a per `we_invoke_*` basis
+- Actions Required: Update the `when.js` tooling, so that `context.requestId` and `event.requestContext.requestId` are defined. Ideally use `Chance.guid()` (since its an already available dependency), or alternatively a `uuid` dev dependency, to generate them on a per `we_invoke_*` basis
 
 ### Exercise: Set up CI/CD with GitHub Actions
 

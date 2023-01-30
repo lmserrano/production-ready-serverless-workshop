@@ -1,7 +1,6 @@
 const APP_ROOT = '../../'
 const _ = require('lodash')
-const { v4: uuidv4 } = require('uuid')
-
+const chance = require('chance').Chance()
 const EventBridge = require('aws-sdk/clients/eventbridge')
 
 const aws4 = require('aws4')
@@ -87,7 +86,7 @@ const viaHttp = async (relPath, method, opts) => {
 }
 
 const generateEvent = eventContents => {
-  const event = { requestContext: { requestId: uuidv4({}, {}, {}) } }
+  const event = { requestContext: { requestId: chance.guid() } }
   return { ...event, ...eventContents }
 }
 
