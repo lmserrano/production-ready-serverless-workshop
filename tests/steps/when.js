@@ -86,7 +86,7 @@ const viaHttp = async (relPath, method, opts) => {
 }
 
 const generateEvent = eventContents => {
-  const event = { requestContext: { requestId: chance.guid() } }
+  const event = { requestContext: { requestId: 'test-' + chance.guid() } }
   return { ...event, ...eventContents }
 }
 
