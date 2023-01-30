@@ -66,3 +66,4 @@ The parts and steps below have been adapted based on the original roadmap, its s
 - Real-time visualization of SNS notifications and EventBus events with [lumigo-cli](https://www.npmjs.com/package/lumigo-cli) (global/local dependency) with commands:
   - `tail-sns`
   - `tail-eventbridge-bus`
+- Move each provider level IAM role to a function-specific dedicated IAM role to minimise the attack surface
