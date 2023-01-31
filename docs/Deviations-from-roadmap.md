@@ -117,7 +117,7 @@ This file logs the points of the workshop for which deviations of the planned ro
   - This was reported on [Failed to get the current sub/segment from the context #415](https://github.com/aws/aws-xray-sdk-node/issues/415)
   - This was suggested by someone else in [this comment](https://github.com/aws/aws-xray-sdk-node/issues/415#issuecomment-837423727)
 
-### After Wrap-up
+### (After) Wrap-up
 
 - Location/Step: After finishing the workshop, running the integration and acceptance tests should pass
 - Observed: Some of the integration tests run with `npm run test` are failing with `TypeError: Cannot read properties of undefined (reading 'claims')` due to `const userId = event.requestContext.authorizer.claims.sub` 
@@ -137,3 +137,29 @@ This file logs the points of the workshop for which deviations of the planned ro
     return { ...event, ...eventContents }
   }
   ```
+
+### (After) Wrap up
+
+- Location/Step: After finishing the workshop, after fixing the previous issue with the event fields, the tests should pass, but there are still some other test errors
+- Observed: Some of the integration and acceptance tests are hanging until timeout:
+  - `tests/test_cases/place-order.tests.js`
+  - `tests/test_cases/notify-restaurant.tests.js`
+  - With the following:
+    ```
+    thrown: "Exceeded timeout of 10000 ms for a test.
+    Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test."
+    ```
+  - Please note that it will continue to timeout regardless the duration of `testTimeout` configured in `jest.config.js`
+  - Please note that it happens for both integration and acceptance tests
+  - After investigation, it was detected that the problem is caused by: `require('@dazn/lambda-powertools-eventbridge-client')`
+- Actions Required:
+  - Fix timeout hanging of tests which use: `require('@dazn/lambda-powertools-eventbridge-client')`
+  - Note: Ideally we should dynamically load the libraries in the way we need to use them, but since I didn't manage to get it working that way in some quick experiments, I've opted to just load both and use a ternary operator for using one or the other
+    ```
+    const EventBridge = require('aws-sdk/clients/eventbridge')
+    const testEventBridge = XRay.captureAWSClient(new EventBridge())
+    const eventBridge = XRay.captureAWSClient(require('@dazn/lambda-powertools-eventbridge-client'))
+    const actualEventBridge = process.env.stage === "dev" || process.env.stage === "ci-dev" ? testEventBridge : eventBridge
+    ```
+    - And then use `actualEventBridge.putEvents` instead of `eventBridge.putEvents`, in the respective occurrences in both of these functions
+    - Make sure to deploy with `npx sls deploy` before attempting to run via `npm run acceptance`, or they will still fail (and the CI/CD pipeline will thus not be able to get to deploy the version either, since the acceptance tests before deploy step will not pass if you don't deploy manually first at least one time, to fix this)
