@@ -264,13 +264,18 @@ functions:
 resources:
   - Conditions:
       IsE2eTest:
-        Fn::Or:
-          - Fn::Equals:
-            - ${sls:stage}
-            - dev
-          - Fn::Equals:
-            - ${sls:stage}
-            - ci-dev
+        # With "serverless-plugin-extrinsic-functions" plugin
+        Fn::EndsWith:
+          - ${sls:stage}
+          - dev
+#        # Without any plugins
+#        Fn::Or:
+#          - Fn::Equals:
+#            - ${sls:stage}
+#            - dev
+#          - Fn::Equals:
+#            - ${sls:stage}
+#            - ci-dev
 
   # Disabled WAF Creation for costing purposes
   #- ${file(./resources/waf.yml)}
@@ -468,3 +473,4 @@ plugins:
   - serverless-api-gateway-throttling
   - serverless-associate-waf
   - serverless-plugin-aws-alerts
+  - serverless-plugin-extrinsic-functions

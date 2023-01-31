@@ -85,3 +85,7 @@ The parts and steps below have been adapted based on the original roadmap, its s
 - Custom correlation IDs
 - Auto-instrumenting with the `serverless-lumigo` plugin
 - Powertuning Lambda functions with [aws-lambda-power-tuning tool](https://github.com/alexcasalboni/aws-lambda-power-tuning) and [lumigo.io](https://lumigo.io)
+
+## Part 4 and Wrap Up Extras
+
+- `serverless-plugin-extrinsic-functions` plugin for additional expressive `Fn::` conditions to use in `serverless.yml`

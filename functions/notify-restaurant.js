@@ -4,7 +4,7 @@ const XRay = require('aws-xray-sdk-core')
 const EventBridge = require('aws-sdk/clients/eventbridge')
 const testEventBridge = XRay.captureAWSClient(new EventBridge())
 const eventBridge = XRay.captureAWSClient(require('@dazn/lambda-powertools-eventbridge-client'))
-const actualEventBridge = process.env.stage === "dev" || process.env.stage === "ci-dev" ? testEventBridge : eventBridge
+const actualEventBridge = process.env.stage.endsWith("dev") ? testEventBridge : eventBridge
 const SNS = require('aws-sdk/clients/sns')
 const sns = XRay.captureAWSClient(new SNS())
 
