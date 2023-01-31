@@ -116,3 +116,24 @@ This file logs the points of the workshop for which deviations of the planned ro
 - Actions Required/Suggested: Set the `AWS_XRAY_CONTEXT_MISSING` environment variable to `IGNORE_ERROR` (if set to `LOG_ERROR` you'll enable this default error logging behavior)
   - This was reported on [Failed to get the current sub/segment from the context #415](https://github.com/aws/aws-xray-sdk-node/issues/415)
   - This was suggested by someone else in [this comment](https://github.com/aws/aws-xray-sdk-node/issues/415#issuecomment-837423727)
+
+### After Wrap-up
+
+- Location/Step: After finishing the workshop, running the integration and acceptance tests should pass
+- Observed: Some of the integration tests run with `npm run test` are failing with `TypeError: Cannot read properties of undefined (reading 'claims')` due to `const userId = event.requestContext.authorizer.claims.sub` 
+- Actions Required: Add the appropriate fields to the previously added `generateEvent` function used in the tests, as follows:
+  ```
+  const generateEvent = eventContents => {
+    const event = {
+      requestContext: {
+        requestId: 'test-' + chance.guid(), // Required by EMF metric functions calls used
+        authorizer: {
+          claims: {
+            sub: "test-sub" // Required by X-Ray CorrelationIds set calls used
+          }
+        }
+      }
+    }
+    return { ...event, ...eventContents }
+  }
+  ```

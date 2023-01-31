@@ -86,7 +86,16 @@ const viaHttp = async (relPath, method, opts) => {
 }
 
 const generateEvent = eventContents => {
-  const event = { requestContext: { requestId: 'test-' + chance.guid() } }
+  const event = {
+    requestContext: {
+      requestId: 'test-' + chance.guid(), // Required by EMF metric functions calls used
+      authorizer: {
+        claims: {
+          sub: "test-sub" // Required by X-Ray CorrelationIds set calls used
+        }
+      }
+    }
+  }
   return { ...event, ...eventContents }
 }
 
