@@ -84,3 +84,4 @@ The parts and steps below have been adapted based on the original roadmap, its s
     - through EventBridge events with `@dazn/lambda-powertools-eventbridge-client`
 - Custom correlation IDs
 - Auto-instrumenting with the `serverless-lumigo` plugin
+- Powertuning Lambda functions with [aws-lambda-power-tuning tool](https://github.com/alexcasalboni/aws-lambda-power-tuning) and [lumigo.io](https://lumigo.io)
