@@ -2,7 +2,10 @@
 
 This project was created based on, and as part of Yan Cui's [Production Ready Serverless Workshop](https://productionreadyserverless.com/) (January 2023).
 
-For additional information please check the [/docs](./docs) folder.
+For additional information please check the [/docs](./docs) folder, namely:
+
+- [Summary of Work](./docs/Summary-of-work.md)
+- [Deviations from Roadmap](./docs/Deviations-from-roadmap.md)
 
 ----
 
