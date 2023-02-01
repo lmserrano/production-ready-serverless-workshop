@@ -2,6 +2,12 @@
 
 This file logs the points of the workshop for which deviations of the planned roadmap were observed, as well as associated documentation on alternative approaches followed and their reasoning.
 
+Please note that depending on specific package versions, some of the optional implementation suggestions and approaches taken, some things may or may not apply to your case.
+
+## Part 1 - Building REST APIs
+
+No specific deviations to record regarding this part.
+
 ## Part 2 - Testing and CI/CD
 
 ### Exercise: Writing integration tests
@@ -108,6 +114,12 @@ This file logs the points of the workshop for which deviations of the planned ro
   - Update `serverless.yml` to include the necessary AWS SSM Parameters under `Resources`, since they should be part of the stack
   - Not recommended: Update the `.github/workflows/dev.yml` file to include steps for creating and deleting them
     - Note: This is a bit of a temporary workaround/fix, because the ideal is for this to be part of the stack's definition and be provided via CloudFormation template within serverless, but since we may want the values to not be reset across deployments, this workaround looked suitable for the time being.
+
+## Part 3 - Processing events in real-time
+
+No specific deviations to record regarding this part.
+
+## Part 4 - Observability
 
 ### Exercise: X-Ray
 

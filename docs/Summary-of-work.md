@@ -88,4 +88,6 @@ The parts and steps below have been adapted based on the original roadmap, its s
 
 ## Part 4 and Wrap Up Extras
 
+- Overall automation changes, improvements and fixes to allow full environment setup automation
 - `serverless-plugin-extrinsic-functions` plugin for additional expressive `Fn::` conditions to use in `serverless.yml`
+- Documentation of deviations from workshop's initially expected path
