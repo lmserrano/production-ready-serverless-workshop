@@ -81,7 +81,7 @@ custom:
         namespace: 'AWS/Lambda'
         description: '/search 5xx errors'
         metric: Errors
-        threshold: 0
+        threshold: 1
         treatMissingData: notBreaching
         statistic: Sum
         period: 60
