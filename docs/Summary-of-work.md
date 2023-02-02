@@ -24,6 +24,10 @@ The parts and steps below have been adapted based on the original roadmap, its s
 - Separate Serverless resources across multiple files
 - Web Application Firewall (WAF) rate-based limiting rules and `serverless-associate-waf`
 - Alerts and CloudWatch Dashboards with `serverless-plugin-aws-alerts`
+  - Automated Dashboard
+  ![Automated Dashboard](images/automated-dashboard.png)
+  - Custom Log-based Alarm - Trigger on 100+ cartoon searches within a period
+  ![Custom Log-based Alarm](images/custom-log-based-alarm.png)
 
 ## Part 2 - Testing and CI/CD
 

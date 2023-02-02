@@ -64,9 +64,10 @@ custom:
       - functionThrottles
       - functionInvocations
       - functionDuration
-    #      # Custom
-    #      - restaurantsSearchErrors
-    #      - restaurantsSearchLatency
+      # Custom
+      #- restaurantsSearchErrors
+      #- restaurantsSearchLatency
+      - restaurantsSearchForCartoon
     definitions:
       # Fine-tuning default alarms
       functionInvocations:
@@ -97,6 +98,17 @@ custom:
         period: 60
         evaluationPeriods: 1
         comparisonOperator: GreaterThanOrEqualToThreshold
+      restaurantsSearchForCartoon:
+        namespace: 'prod-serverless-workshop'
+        description: '/search for theme: cartoon'
+        metric: searchThemeCartoon
+        threshold: 100
+        treatMissingData: notBreaching
+        statistic: Sum
+        period: 60
+        evaluationPeriods: 1
+        comparisonOperator: GreaterThanOrEqualToThreshold
+        pattern: '{$.theme = "cartoon"}'
 
 provider:
   name: aws
