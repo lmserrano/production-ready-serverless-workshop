@@ -62,7 +62,7 @@ jobs:
       # delete SSM SecureString parameters (which aren't supported by CloudFormation)
       - name: Delete SSM SecureString Parameters (Not supported by CloudFormation)
         id: delete-ssm-securestring-parameters
-        if: success() && steps.create-ssm-securestring-parameters.conclusion != 'success'
+        if: always()
         run: |
           aws ssm delete-parameters --names "/workshop-luisserrano/ci-dev/search-restaurants/secretString"
 
