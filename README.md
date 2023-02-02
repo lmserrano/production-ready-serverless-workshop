@@ -49,13 +49,25 @@ provider:
     }
     ```
 7. Click `Update policy`. Make sure the [.github/workflows/dev.yml](./.github/workflows/dev.yml) file is using the correct `role-to-assume: <IAM ROLE ARN>` value, for this role's ARN.
+8. Go to `AWS KMS` and `Create Key`, then under "Configure Key":
+    - Type: `Symmetric`
+    - Key Material Origin: `KMS`
+9. Under "Add Labels":
+    - Alias: `workshop-luisserrano`
+10. Under "Define key administrative permissions", select:
+    - Check/Tick your User account
+    - Check/Tick your Administrator Role
+    - Key deletion: Check/Tick "Allow key administrators to delete this key" 
+11. Under "Define key usage permissions", select:
+    - Check/Tick your User account
+12. Finish
 
 #### Deploy stage-specific non-automated configurations
 
 Replace `<YOUR_STAGE>` and `<YOUR_SECRET>` in the command below, and run it:
 
 ```bash
-aws ssm put-parameter --name "/workshop-luisserrano/<YOUR_STAGE>/search-restaurants/secretString" --value "<YOUR_SECRET>" --type SecureString
+aws ssm put-parameter --name "/workshop-luisserrano/<YOUR_STAGE>/search-restaurants/secretString" --value "<YOUR_SECRET>" --type SecureString --key-id "alias/workshop-luisserrano"
 ```
 
 #### Application Setup, Installation and Deployment
@@ -108,8 +120,9 @@ aws ssm delete-parameters --names "/workshop-luisserrano/<YOUR_STAGE>/search-res
 
 Undo what was done on [Deploy Shared Resources](#deploy-shared-resources), namely:
 
-1. Delete the Role created previously
-2. Delete the OpenID Connect Identity Provider created previously 
+1. Delete the Custom KMS key created previously
+2. Delete the Role created previously
+3. Delete the OpenID Connect Identity Provider created previously 
 
 ----
 
