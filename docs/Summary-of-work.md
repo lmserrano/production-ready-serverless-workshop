@@ -9,7 +9,7 @@ The parts and steps below have been adapted based on the original roadmap, its s
 - Webpage Server-side rendering with restaurants search by theme
   - Decoupling of services with `serverless-export-env`
 - Lambda API endpoints for listing and searching restaurants
-- DynamoDB restaurant data seeing and storage
+- DynamoDB restaurant data seeding and storage
 - Cognito User Pool user registration
 - API Gateway `/search` endpoint secured with IAM
 
@@ -85,6 +85,20 @@ The parts and steps below have been adapted based on the original roadmap, its s
 - Custom correlation IDs
 - Auto-instrumenting with the `serverless-lumigo` plugin
 - Powertuning Lambda functions with [aws-lambda-power-tuning tool](https://github.com/alexcasalboni/aws-lambda-power-tuning) and [lumigo.io](https://lumigo.io)
+  - Optimized memory value for get-restaurants lambda function [(see result)](https://lambda-power-tuning.show/#gAAAAQACAAQACMAL;MZi3Q4eWPUP/xqhCrPz1QmTiuUK+JjRC;aXJPNSQ2VjW1qT81e6wKNqizUTYFWBg2)
+    ![Optimization](images/optimizing-get-restaurants-lambda.png)
+    ```json
+    {
+      "power": 512,
+      "cost": 7.140000000000001e-7,
+      "duration": 84.38866666666667,
+      "stateMachine": {
+        "executionCost": 0.0003,
+        "lambdaCost": 0.0010359415499999998,
+        "visualization": "https://lambda-power-tuning.show/#gAAAAQACAAQACMAL;MZi3Q4eWPUP/xqhCrPz1QmTiuUK+JjRC;aXJPNSQ2VjW1qT81e6wKNqizUTYFWBg2"
+      }
+    }
+    ```
 
 ## Part 4 and Wrap Up Extras
 
