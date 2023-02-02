@@ -30,7 +30,35 @@ provider:
   region: eu-west-1
 ```
 
-#### Setup and Installation
+#### Deploy Shared Resources
+
+1. In `Identity and Access Management (IAM)`, go to `Identity providers` and `Add provider` of type `OpenID Connect`, with details:
+    - Provider URL: `https://token.actions.githubusercontent.com`
+    - Click `Get thumbprint`, which should show that it is valid until 2030
+    - Audience: `sts.amazonaws.com`
+2. Create `AWS IAM` `Role` of type `Web identity` and select the `token.actions.githubusercontent.com` provider created in the previous step
+3. Select `sts.amazonaws.com` as the Audience and click `Next`
+4. Select `AdministratorAccess` (for simplicity)
+5. Select a name, like: `GitHubActionsRole` and then create the role
+6. Find the newly created role, and under the `Trust relationships` tab click `Edit trust policy` and replace the Condition section with this (replace `<GitHubOrg>` and `<GitHubRepo>` with your org and repo names):
+    ```bash
+    "Condition": {
+      "StringLike": {
+        "token.actions.githubusercontent.com:sub": "repo:<GitHubOrg>/<GitHubRepo>:*"
+      }
+    }
+    ```
+7. Click `Update policy`. Make sure the [.github/workflows/dev.yml](./.github/workflows/dev.yml) file is using the correct `role-to-assume: <IAM ROLE ARN>` value, for this role's ARN.
+
+#### Deploy stage-specific non-automated configurations
+
+Replace `<YOUR_STAGE>` and `<YOUR_SECRET>` in the command below, and run it:
+
+```bash
+aws ssm put-parameter --name "/workshop-luisserrano/<YOUR_STAGE>/search-restaurants/secretString" --value "<YOUR_SECRET>" --type SecureString
+```
+
+#### Application Setup, Installation and Deployment
 
 ```shell
 npm install
@@ -63,6 +91,25 @@ node seed-restaurants.js
 ```shell
 npx sls remove
 ```
+
+#### Delete stage-specific non-automated configurations
+
+Replace `<YOUR_STAGE>` and `<YOUR_SECRET>` in the command below, and run it:
+
+```bash
+aws ssm delete-parameters --names "/workshop-luisserrano/<YOUR_STAGE>/search-restaurants/secretString"
+```
+
+#### Delete shared resources
+
+> :warning
+> 
+> Shared resources should only be deleted if they were created in the context of this project and if no other projects were created meanwhile that are using it, otherwise it could cause issues!
+
+Undo what was done on [Deploy Shared Resources](#deploy-shared-resources), namely:
+
+1. Delete the Role created previously
+2. Delete the OpenID Connect Identity Provider created previously 
 
 ----
 
