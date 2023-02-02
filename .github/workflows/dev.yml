@@ -33,6 +33,12 @@ jobs:
       - name: npm ci
         run: npm ci
 
+      # create SSM SecureString parameters (which aren't supported by CloudFormation)
+      - name: Create SSM SecureString Parameters (Not supported by CloudFormation)
+        id: create-ssm-securestring-parameters
+        run: |
+          aws ssm put-parameter --name "/workshop-luisserrano/ci-dev/search-restaurants/secretString" --value "this is a secret (for CI/CD)" --type SecureString
+
       # this provisions a temporary stage called 'ci-dev'
       - name: deploy temp environment
         run: npx sls deploy -s ci-dev
@@ -45,12 +51,6 @@ jobs:
       - name: add seed data
         run: node seed-restaurants.js
 
-      # create SSM SecureString parameters (which aren't supported by CloudFormation)
-      - name: Create SSM SecureString Parameters (Not supported by CloudFormation)
-        id: create-ssm-securestring-parameters
-        run: |
-          aws ssm put-parameter --name "/workshop-luisserrano/ci-dev/search-restaurants/secretString" --value "this is a secret (for CI/CD)" --type SecureString
-
       # this runs the integration test against the 'ci-dev' stage
       - name: run integration test
         run: npx cross-env TEST_MODE=handler jest
@@ -59,16 +59,16 @@ jobs:
       - name: run acceptance tests
         run: npx cross-env TEST_MODE=http jest
 
+      # delete the 'ci-dev' stage
+      - name: destroy temp environment
+        run: npx sls remove -s ci-dev
+
       # delete SSM SecureString parameters (which aren't supported by CloudFormation)
       - name: Delete SSM SecureString Parameters (Not supported by CloudFormation)
         id: delete-ssm-securestring-parameters
         if: always()
         run: |
           aws ssm delete-parameters --names "/workshop-luisserrano/ci-dev/search-restaurants/secretString"
-
-      # delete the 'ci-dev' stage
-      - name: destroy temp environment
-        run: npx sls remove -s ci-dev
 
       # deploy to the ACTUAL dev stage
       - name: deploy to dev
