@@ -104,6 +104,18 @@ The parts and steps below have been adapted based on the original roadmap, its s
     }
     ```
 
+#### X-Ray Service Map Views (Icon and Metric)
+
+![X-Ray Service Map Icons](images/x-ray-service-map-icons.png)
+
+![X-Ray Service Map Metrics](images/x-ray-service-map-metrics.png)
+
+#### Lumigo Transaction Views
+
+| Lumigo transaction get-index                                             | Lumigo transaction search-restaurants                                                      | Lumigo transaction place-order                                               |
+|--------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| ![Lumigo transaction get-index](images/lumigo-transaction-get-index.png) | ![Lumigo transaction search-restaurants](images/lumigo-transaction-search-restaurants.png) | ![Lumigo transaction place-order](images/lumigo-transaction-place-order.png) |
+
 ## Part 4 and Wrap Up Extras
 
 - Overall automation changes, improvements and fixes to allow full environment setup automation
