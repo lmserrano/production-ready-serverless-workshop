@@ -19,3 +19,10 @@ Resources:
         {
           "defaultResults": 8
         }
+  KmsArn:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /${self:service}/${sls:stage}/kmsArn
+      Description: kmsArn used for ${self:service}/${sls:stage}
+      Type: String
+      Value: !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/workshop-luisserrano
