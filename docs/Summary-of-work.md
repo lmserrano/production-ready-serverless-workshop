@@ -21,6 +21,7 @@ The parts and steps below have been adapted based on the original roadmap, its s
 - Request validation via API Gateway for the POST `/search` endpoint
 - Enable detailed CloudWatch metrics
 - Custom CloudWatch metrics via `aws-embedded-metrics` using EMF (Embedded Metric Format) underneath
+- CloudFront Distribution with caching
 - Separate Serverless resources across multiple files
 - Web Application Firewall (WAF) rate-based limiting rules and `serverless-associate-waf`
 - Alerts and CloudWatch Dashboards with `serverless-plugin-aws-alerts`

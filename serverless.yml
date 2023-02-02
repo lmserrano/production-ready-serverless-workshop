@@ -281,11 +281,20 @@ functions:
 
 resources:
   - Conditions:
+      Never:
+        Fn::Equals:
+          - "true"
+          - "false"
       IsE2eTest:
         # With "serverless-plugin-extrinsic-functions" plugin
         Fn::EndsWith:
           - ${sls:stage}
           - dev
+      IsNotE2eTest:
+        Fn::Not:
+          - Fn::EndsWith:
+              - ${sls:stage}
+              - dev
 #        # Without any plugins
 #        Fn::Or:
 #          - Fn::Equals:
@@ -295,6 +304,7 @@ resources:
 #            - ${sls:stage}
 #            - ci-dev
 
+  - ${file(./resources/cloudfront.yml)}
   # Disabled WAF Creation for costing purposes
   #- ${file(./resources/waf.yml)}
   - ${file(./resources/ssm-parameters.yml)}

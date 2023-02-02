@@ -3,6 +3,7 @@ Resources:
   # Create WAF Regional Web ACL with Rate-Based Rule to Prevent HTTP Flood DDoS Attack
   MyWAFRegionalWebACL:
     Type: "AWS::WAFv2::WebACL"
+    Condition: Never # Currently disabled
     Properties:
       Name: ApiGateway-HTTP-Flood-Prevent-Auto-${self:provider.stage}
       Scope: REGIONAL
