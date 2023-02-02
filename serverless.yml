@@ -73,6 +73,11 @@ custom:
       functionInvocations:
         threshold: 100
         treatMissingData: missing
+        # To account for the different functions which can potentially have a cold start within the period of analysis of the alarm
+        # For the value to be valid this condition must be satisfied: dataPointsToAlarm <= evaluationPeriods
+        datapointsToAlarm: 1
+        evaluationPeriods: 2
+        period: 60
       functionDuration:
         threshold: 500
         treatMissingData: missing
