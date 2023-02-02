@@ -17,7 +17,7 @@ For additional information please check the [/docs](./docs) folder, namely:
 
 Confirm that you have AWS CLI V2 Installed and that you are using the intended account and region:
 
-```shell
+```bash
 vi ~/.aws/credentials
 ```
 
@@ -41,7 +41,7 @@ provider:
 4. Select `AdministratorAccess` (for simplicity)
 5. Select a name, like: `GitHubActionsRole` and then create the role
 6. Find the newly created role, and under the `Trust relationships` tab click `Edit trust policy` and replace the Condition section with this (replace `<GitHubOrg>` and `<GitHubRepo>` with your org and repo names):
-    ```bash
+    ```
     "Condition": {
       "StringLike": {
         "token.actions.githubusercontent.com:sub": "repo:<GitHubOrg>/<GitHubRepo>:*"
@@ -60,25 +60,25 @@ aws ssm put-parameter --name "/workshop-luisserrano/<YOUR_STAGE>/search-restaura
 
 #### Application Setup, Installation and Deployment
 
-```shell
+```bash
 npm install
 ```
 
 #### Deploy
 
-```shell
+```bash
 npx sls deploy
 ```
 
 #### Update `.env` file with Serverless and CloudFormation vars
 
-```shell
+```bash
 npx sls export-env --all
 ```
 
 #### Fill Seed Items
 
-```shell
+```bash
 node seed-restaurants.js
 ```
 
@@ -88,7 +88,7 @@ node seed-restaurants.js
 
 #### Remove / Delete / Destroy
 
-```shell
+```bash
 npx sls remove
 ```
 
@@ -119,7 +119,7 @@ Undo what was done on [Deploy Shared Resources](#deploy-shared-resources), namel
 
 This has been documented here on [GitHub serverless-api-gateway-throttling Issue #16](https://github.com/DianaIonita/serverless-api-gateway-throttling/issues/16) and shall be resolved with:
 
-```shell
+```bash
 sls reset-all-endpoint-settings
 ```
 
@@ -133,30 +133,30 @@ sls reset-all-endpoint-settings
 
 It is recommended that you have other optional but useful global dependencies available:
 
-```shell
+```bash
 npm i -g lumigo-cli
 ```
 
 #### Invoke Functions Locally
 
-```shell
+```bash
 npx sls invoke local --function get-index
 ```
 
 #### Get Logs for Serverless Function (including after Acceptance Tests)
 
-```shell
+```bash
 npx sls logs -f search-restaurants
 ```
 
 #### Visualize SNS Notifications in Console
 
-```shell
+```bash
 lumigo-cli tail-sns -r "eu-west-1" -n "workshop-luisserrano-dev-RestaurantNotificationTopic-IuiDAZw3TMX6"
 ```
 
 #### Visualize EventBridge events in Console
 
-```shell
+```bash
 lumigo-cli tail-eventbridge-bus -r "eu-west-1" -n "order_events_dev_luisserrano"
 ```
