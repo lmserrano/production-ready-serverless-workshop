@@ -54,6 +54,23 @@ npx sls export-env --all
 node seed-restaurants.js
 ```
 
+#### Manual Steps
+
+Some configuration steps are done manually and were disabled/removed when archiving the deployed application for further cost optimizations.
+
+These steps need to be redone when/after deploying
+
+1. `.emv` and `.env-outputs` file should look similar to [.template.env](./.template.env)
+2. In AWS Console, `AWS Systems Manager > Parameter Store` should contain two manual entries:
+    1. `/workshop-luisserrano/dev/kmsArn` of type `String` with value equivalent to `arn:aws:kms:eu-west-1:092046679419:key/8701727d-7e71-4eef-bc5c-5a9418dc487a`
+    2. `/workshop-luisserrano/dev/search-restaurants/secretString` of type `SecureString` with value `this is a secret`
+3. Update [./github/workflows/dev.yml](./.github/workflows/dev.yml) to have the workflow run on the `main` branch, as follows:
+    ```
+    on:
+      push:
+        branches: [ main ]
+    ```
+
 ----
 
 ### Cleanup and Deletion
